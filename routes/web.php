@@ -45,6 +45,16 @@ Route::controller(NoticiasController::class)->group(function() {
     Route::match(['PUT', 'PATCH'], 'noticias/{noticia}', 'update')
         ->name('noticias.update');
 
-    // 
+    // Softdelete
+    Route::get('/borrar/noticia/{noticia}', 'destroy')
+        ->name('noticias.destroy');
+
+    // Eliminar definitivamente
+    Route::delete('/noticias/purge', 'purge')
+        ->name('noticias.purge');
+
+    // Restauración noticia eliminada
+    Route::get('/noticias/{noticia}/restore', 'restore')
+        ->name('noticias.restore');
 
 });

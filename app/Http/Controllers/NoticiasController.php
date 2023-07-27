@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Noticia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Auth\Access\AuthorizationException;
 
+// autorizaciones en formRequest o aquí mismo
+// hacer policies: restore, delete
+// hacer componente para mensajes de alert
 
 class NoticiasController extends Controller
 {
@@ -78,8 +84,39 @@ class NoticiasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Noticia $noticia)
     {
-        //
+        $noticia->delete();
+
+        return redirect('/noticias');
+    }
+
+    // método de restaurar noticia borrada
+    public function restore(Request $request, int $id) {
+        // recupera la noticia borrada
+        $noticia = Noticia::withTrashed()->findOrFail($id);
+
+        if($request->user()->cant('restore', $noticia))
+            throw new AuthorizationException('No tienes permiso');
+
+        // restaura la noticia
+        $noticia->restore();
+
+        return back()->with('success', "Noticia $noticia->titulo restaurado correctamente.");
+    }
+
+    // Método para eliminar la noticia definitivamente
+    public function purge(Request $request) {
+        $noticia = Noticia::withTrashed()->findOrFail($request->input('noticia_id'));
+
+        // comprobar permisos mediante la policy (FALTA HACER)
+        if($request->user()->cant('delete', $noticia));
+            throw new AuthorizationException('No tienes permiso.');
+
+        // eliminar imagen si se puede eliminar
+        if($noticia->forceDelete() && $noticia->imagen)
+            Storage::delete(config('filesystems.noticiasImageDir').'/'.$noticia->imagen);
+
+        return back()->with('success', "Noticia $noticia->titulo eliminada correctamente.");
     }
 }
