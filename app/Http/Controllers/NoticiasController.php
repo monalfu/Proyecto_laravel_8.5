@@ -22,6 +22,7 @@ class NoticiasController extends Controller
     {
         $noticias = Noticia::orderBy('id','DESC')->paginate(config('pagination.dulces'));
 
+        return view('noticias.list', ['noticias'=>$noticias]);
     }
 
     /**
@@ -90,6 +91,18 @@ class NoticiasController extends Controller
         $noticia->delete();
 
         return redirect('/noticias');
+    }
+
+    public function search(Request $request, $titulo = null, $tema = null) {
+        $titulo = $titulo ?? $request->input('titulo', '');
+        $tema = $tema ?? $request->input('tema', '');
+
+        $noticias = Noticia::where('titulo', 'like', "%$titulo%")
+            ->where('tema', 'like', '%$tema%')
+            ->paginate(config('paginator.noticias', 5))
+            ->appends(['titulo' => $titulo, 'tema' => $tema]);
+
+        return view('noticias.list', ['noticias' => $noticias, 'titulo' => $titulo, 'tema' => $tema]);
     }
 
     // método de restaurar noticia borrada

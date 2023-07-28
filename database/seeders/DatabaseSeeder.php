@@ -8,6 +8,7 @@ use App\Models\Noticia;
 use App\Models\Comentario;
 
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -17,8 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //User::factory(30)->create();
-        Noticia::factory(20)->create();
-        //Comentario::factory(40)->create();
+        User::factory(30)->create();
+        Noticia::factory(30)->create();
+        Comentario::factory(40)->create();
     }
 }

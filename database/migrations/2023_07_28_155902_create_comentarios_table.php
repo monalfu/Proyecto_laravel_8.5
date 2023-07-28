@@ -36,9 +36,5 @@ class CreateComentariosTable extends Migration
     {
         Schema::dropIfExists('comentarios');
 
-        Schema::table('comentarios', function (Blueprint $table) {
-            $table->dropForeign('comentarios_user_id_foreign');
-            $table->dropForeign('comentarios_noticia_id_foreign');
-        });
     }
 }
