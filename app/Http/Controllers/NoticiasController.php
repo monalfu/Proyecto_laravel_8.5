@@ -20,7 +20,8 @@ class NoticiasController extends Controller
      */
     public function index()
     {
-        //
+        $noticias = Noticia::orderBy('id','DESC')->paginate(config('pagination.dulces'));
+
     }
 
     /**

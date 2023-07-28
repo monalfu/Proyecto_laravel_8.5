@@ -16,14 +16,14 @@ use App\Http\Controllers\NoticiasController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
     return view('welcome');
 });
-
+*/
 Route::controller(NoticiasController::class)->group(function() {
     // Página de listado noticias publicadas
-    Route::get('/noticias', 'index')
+    Route::get('/', 'index')
         ->name('noticias.index');
 
     // Creación noticias
