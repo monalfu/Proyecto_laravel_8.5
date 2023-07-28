@@ -19,7 +19,7 @@ class ComentarioFactory extends Factory
         return [
             'texto' => $this->faker->realTextBetween(30, 255, 4),
             'user_id' => $this->faker->numberBetween(11, 30),
-            'noticia_id' => $this->faker->unique->numberBetween(1, 30)
+            'noticia_id' => $this->faker->numberBetween(1, 30)
         ];
     }
 }
