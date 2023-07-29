@@ -22,20 +22,106 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                {{-- Left Side of Navbar --}}
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item mr-2">
-                        <a href="{{ url('/')}}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Noticias</a>
-                    </li>
-                    
-                </ul>
-            </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    {{-- Left Side of Navbar --}}
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item mr-2">
+                            <a href="{{ url('/')}}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Noticias</a>
+                        </li>
 
+                        {{-- falta auth --}}
+                        <li class="nav-item mr-2">
+                            <a href="{{ route('home') }}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Home</a>
+                        </li>
+                        {{-- auth if si es redactor --}}
+                        <li class="nav-item mr-2">
+                            <a href="{{ route('noticias.create') }}" class="nav-link {{ $pagina=='noticias.create' ? 'active' : '' }}">Crear noticia</a>
+                        </li>
+                        {{-- OPCIONAL: auth is si es editor --}}
+                        <li class="nav-item mr-2">
+                            <a href="{{ route('noticias.list_no_published') }}" class="nav-link {{ $pagina=='noticias.list' ? 'active' : '' }}">Noticias sin publicar</a>
+                        </li>
+                        {{-- auth if si es editor y redactor - Noticias borradas --}}
+                        <li class="nav-item mr-2">
+                            <a href="{{ route('deleted.noticias') }}" class="nav-link {{ $pagina=='deleted.noticias' ? 'active' : '' }}">Noticias borradas</a>
+                        </li>
+                        {{-- auth if si es administrador --}}
+                        <li class="nav-item mr-2">
+                            <a href="{{ route('admin.users') }}" class="nav-link {{ $pagina=='admin.users' ? 'active' : '' }}">Noticias borradas</a>
+                        </li>
+                    </ul>
+
+                    {{-- Right side of navbar --}}
+                    <ul class="navbar-nav ms-auto">
+                        {{-- Authentication links --}}
+                        @guest
+                        @if (Route::has('login'))
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="nav-link {{ $pagina == 'login' ? 'active' : '' }}">{{ __('Login') }}</a>
+                        </li>
+
+                        @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link {{$pagina=='register' ? 'active' : ''}}" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                        @endif
+                        @else
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }} ({{ Auth::user()->email}})
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('home') }}">
+                                    {{ __('Home') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                        @endif
+                    @endguest
+                    </ul>
+                </div>
+            </div>
         </nav>
     @show
 
+    {{-- PARTE CENTRAL --}}
+    <h1 class="my-2">Laranews</h1>
 
+    <main>
+        <h2>@yield('titulo')</h2>
+
+        @if(Session::has('success'))
+            <x-alert type="success" message="{{Session::get('success')}}"/>
+        @endif
+
+        @if($errors->any())
+        <x-alert type="danger" message="Se han producido errores:">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </x-alert>
+        @endif
+
+        @yield('contenido')
+
+    </main>
+
+    {{-- PARTE INFERIOR --}}
+    @section('pie')
+        <footer class="page-footer font-small-p-4 bg-light">
+            <p>Aplicación creada por Montse Alguacil. Desarrollada haciendo uso de <b>Laravel</b> y <b>bootstrap</b>.</p>
+        </footer>
+    @show
 </body>
 </html>

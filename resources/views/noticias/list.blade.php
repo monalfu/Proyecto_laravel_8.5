@@ -3,11 +3,11 @@
 @section('titulo', "Listado noticias")
 
 @section('contenido')
-    <form action="{{route('dulces.search')}}" method="GET" class="col-6 row">
-        <input name="nombre" type="text" class="col form-control mr-2 mb-2" placeholder="Nombre" maxlength="50" value="{{$nombre ?? ''}}">
-        <input type="text" name="ingredientes" class="col form-control mr-2 mb-2" placeholder="Ingrediente" maxlength="20" value="{{$ingredientes ?? ''}}">
+    <form action="{{ route('noticias.search') }}" method="GET" class="col-6 row">
+        <input name="titulo" type="text" class="col form-control mr-2 mb-2" placeholder="Título" maxlength="40" value="{{$titulo ?? ''}}">
+        <input type="text" name="tema" class="col form-control mr-2 mb-2" placeholder="Ingrediente" maxlength="20" value="{{$tema ?? ''}}">
         <button type="submit" class="col btn btn-primary mr-2 mb-2">Buscar</button>
-        <a href="{{route('dulces.index')}}">
+        <a href="{{ route('dulces.index') }}">
             <button type="button" class="col btn btn-primary mb-2">Quitar filtro</button>
         </a>
     </form>

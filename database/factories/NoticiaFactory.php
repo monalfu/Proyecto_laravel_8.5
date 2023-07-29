@@ -17,7 +17,7 @@ class NoticiaFactory extends Factory
     public function definition()
     {
         return [
-            'titulo' => $this->faker->unique->realTextBetween(10, 40, 4),
+            'titulo' => $this->faker->unique()->realTextBetween(10, 40, 4),
             'tema' => $this->faker->randomElement([
                 'Política', 'Deporte', 'Economía', 'Cultural', 'Social', 'Entretenimiento', 'Cinetífica', 'Sucesos', 'Corazón'
             ]),
