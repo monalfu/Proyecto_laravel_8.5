@@ -26,6 +26,10 @@ Route::controller(NoticiasController::class)->group(function() {
     Route::get('/', 'index')
         ->name('noticias.index');
 
+    // Buscador noticias por título o tema
+    Route::get('/noticias/search/{titulo?}/{tema?}')
+        ->name('noticias.search');
+        
     // Creación noticias
     Route::get('/noticias/create', 'create')
         ->name('noticias.create');
@@ -58,6 +62,9 @@ Route::controller(NoticiasController::class)->group(function() {
     Route::get('/noticias/{noticia}/restore', 'restore')
         ->name('noticias.restore');
 
+    // Confirmación borrado definitivo
+    Route::get('/noticias/{noticia}/delete', 'delete')
+        ->name('noticias.delete');
 });
 
 Auth::routes();

@@ -13,6 +13,10 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class NoticiasController extends Controller
 {
+    public function __construct() {
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +24,7 @@ class NoticiasController extends Controller
      */
     public function index()
     {
-        $noticias = Noticia::orderBy('id','DESC')->paginate(config('pagination.dulces'));
+        $noticias = Noticia::orderBy('id','DESC')->paginate(config('pagination.noticias'));
 
         return view('noticias.list', ['noticias'=>$noticias]);
     }
