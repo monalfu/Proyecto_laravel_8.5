@@ -38,9 +38,9 @@
                             <a href="{{ route('noticias.create') }}" class="nav-link {{ $pagina=='noticias.create' ? 'active' : '' }}">Crear noticia</a>
                         </li>
                         {{-- OPCIONAL: auth is si es editor --}}
-                        <li class="nav-item mr-2">
-                            <a href="{{ route('noticias.list_no_published') }}" class="nav-link {{ $pagina=='noticias.list' ? 'active' : '' }}">Noticias sin publicar</a>
-                        </li>
+                        {{-- <li class="nav-item mr-2">
+                            <a href="{{ route('noticias.index') }}" class="nav-link {{ $pagina=='noticias.list' ? 'active' : '' }}">Noticias sin publicar</a>
+                        </li> --}}
                         {{-- auth if si es editor y redactor - Noticias borradas --}}
                         <li class="nav-item mr-2">
                             <a href="{{ route('deleted.noticias') }}" class="nav-link {{ $pagina=='deleted.noticias' ? 'active' : '' }}">Noticias borradas</a>
