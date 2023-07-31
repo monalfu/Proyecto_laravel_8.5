@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Noticia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Routing\Controller;
 
 // autorizaciones en formRequest o aquí mismo
 // hacer policies: restore, delete
@@ -27,6 +29,7 @@ class NoticiasController extends Controller
         $noticias = Noticia::orderBy('id','DESC')->paginate(config('pagination.noticias'));
 
         return view('noticias.list', ['noticias'=>$noticias]);
+
     }
 
     /**
