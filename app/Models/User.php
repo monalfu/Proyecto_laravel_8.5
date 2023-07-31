@@ -45,4 +45,26 @@ class User extends Authenticatable
     public function noticias() {
         return $this->hasMany('\App\Models\Noticia');
     }
+
+    // recupera el rol del usuario
+    public function roles() {
+        return $this->belongsToMany('App\Models\Role');
+    }
+
+    public function hasRole($roleNames):bool {
+        if(!is_array($roleNames))
+            $roleNames = [$roleNames];
+
+        foreach($this->roles as $role) {
+            if(in_array($role->role, $roleNames))
+                return true;
+        }
+
+        return false;
+    }
+
+    public function isOwner(Noticia $noticia):bool {
+        return $this->id == $noticia->user_id;
+    }
+
 }
