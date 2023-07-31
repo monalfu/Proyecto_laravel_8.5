@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Routing\Controller;
+use PHPUnit\Framework\Error\Notice;
 
 // autorizaciones en formRequest o aquí mismo
 // hacer policies: restore, delete
@@ -29,7 +30,6 @@ class NoticiasController extends Controller
         $noticias = Noticia::orderBy('id','DESC')->paginate(config('pagination.noticias'));
 
         return view('noticias.list', ['noticias'=>$noticias]);
-
     }
 
     /**
@@ -39,7 +39,7 @@ class NoticiasController extends Controller
      */
     public function create()
     {
-        //
+        return view('noticias.create');
     }
 
     /**
@@ -50,7 +50,25 @@ class NoticiasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datosNoticia = $request->only('titulo', 'tema', 'texto', 'imagen');
+
+        // recuperación imagen
+        if($request->hasFile('imagen')) {
+            $ruta = $request->file('imagen')->store(config('filesystems.noticiasImageDir'));
+
+            $datosNoticia['imagen'] = pathinfo($ruta, PATHINFO_BASENAME);
+        }
+
+        // recupera el id del usuario identificado para añadirlo a la BDD
+        $datosNoticia['user_id'] = $request->user()->id;
+
+        // creación y guardado
+        $noticia = Noticia::create($datosNoticia);
+
+        // redirección a la noticia completa creada
+        return redirect()
+            ->route('noticias.show', $noticia->id)
+            ->with('success', "Noticia $noticia->titulo añadida satisfactoriamente, pendiente de publicar por parte del editor.");
     }
 
     /**
@@ -59,9 +77,16 @@ class NoticiasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Noticia $noticia)
     {
-        //
+        // usuario identificado
+        $authUser = auth()->user();
+
+        // incremento +1 cada vez que se abre la noticia publicada y no es el redactor quien la abre
+        if($noticia->published_at != null && $authUser != $noticia->user_id)
+            $noticia->increment('visitas', 1);
+
+        return view('noticias.show', ['noticia'=>$noticia]);
     }
 
     /**
@@ -70,9 +95,13 @@ class NoticiasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, Noticia $noticia)
     {
-        //
+        // HACER POLICY
+        if($request->user()->cant('update', $noticia))
+            abort(401, 'No puedes editar esta noticia');
+
+        return view('noticias.update', ['noticia'=>$noticia]);
     }
 
     /**
@@ -82,9 +111,24 @@ class NoticiasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Noticia $noticia)
     {
-        //
+        // VALIDACIÓN
+
+        $datosNoticia = $request->all();
+
+        if($request->hasFile('imagen')) {
+            $imagenNueva = $request->file('imagen')->store(config('filesystems.noticiasImageDir'));
+
+            Storage::delete(config('filesystems.noticiasImageDir') . '/' . $noticia->imagen);
+
+            $datosNoticia['imagen'] = pathinfo($imagenNueva, PATHINFO_BASENAME);
+
+        $noticia->update($datosNoticia);
+
+        return back()
+            ->with('success', "La noticia $noticia->titulo ha sido actualizada.");
+        }
     }
 
     /**
@@ -139,5 +183,13 @@ class NoticiasController extends Controller
             Storage::delete(config('filesystems.noticiasImageDir').'/'.$noticia->imagen);
 
         return back()->with('success', "Noticia $noticia->titulo eliminada correctamente.");
+    }
+
+    public function delete(Request $request, Noticia $noticia)
+    {
+        // HACER POLICI
+        $request->user()->can('delete', $noticia);
+
+        return view('noticias.delete', ['noticia'=>$noticia]);
     }
 }
