@@ -21,8 +21,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        // recuperar noticias
+        $noticias = $request->user()->noticias()
+            ->paginate(config('pagination.noticias', 5));
+
+        // noticias borradas
+        $deletedNoticias = $request->user()->noticias()->onlyTrashed()->paginate(config('pagination.noticias', 5))->get();
+
+        // comentarios escritos
+        $comentarios = $request->user()->comentarios()->paginate(config('pagination.comentarios', 5));
+
+        return view('home', ['noticias' => $noticias, 'deletedNoticias' => $deletedNoticias, 'comentarios' => $comentarios]);
     }
 }

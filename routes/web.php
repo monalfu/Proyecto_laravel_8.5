@@ -1,9 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NoticiasController;
+
 
 
 /*
@@ -73,3 +77,33 @@ Route::controller(NoticiasController::class)->group(function() {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::prefix('admin')->controller(AdminController::class)->middleware('auth', 'is_admin')->group(function() {
+    // noticias eliminadas
+    Route::get('deletednoticias', 'deletedNoticias')
+        ->name('admin.deleted.noticias');
+
+    // detalles usuario
+    Route::get('usuario/{user}/detalles', 'userShow')
+    ->name('admin.user.show');
+
+    // listado usuarios
+    Route::get('usuarios', 'userList')
+    ->name('admin.users');
+
+    // búsqueda usuarios
+    Route::get('usuario/buscar', 'userSearch')
+    ->name('admin.users.search');
+
+    // añadir rol
+    Route::get('role', 'setRole')
+    ->name('admin.user.setRole');
+
+    // eliminar rol
+    Route::get('role', 'removeRole')
+    ->name('admin.user.removeRole');
+});
+
+// ruta de usuarios bloqueados, HACER UserController
+Route::get('/bloqueado', [UserController::class, 'blocked'])
+    ->name('user.blocked');
