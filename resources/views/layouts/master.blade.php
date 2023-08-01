@@ -28,11 +28,6 @@
                         <li class="nav-item mr-2">
                             <a href="{{ url('/')}}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Noticias</a>
                         </li>
-
-                        {{-- falta auth --}}
-                        <li class="nav-item mr-2">
-                            <a href="{{ route('home') }}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Home</a>
-                        </li>
                         {{-- auth if si es redactor --}}
                         <li class="nav-item mr-2">
                             <a href="{{ route('noticias.create') }}" class="nav-link {{ $pagina=='noticias.create' ? 'active' : '' }}">Crear noticia</a>
@@ -41,13 +36,16 @@
                         {{-- <li class="nav-item mr-2">
                             <a href="{{ route('noticias.index') }}" class="nav-link {{ $pagina=='noticias.list' ? 'active' : '' }}">Noticias sin publicar</a>
                         </li> --}}
-                        {{-- auth if si es editor y redactor - Noticias borradas --}}
+                        {{-- auth if si es editor y redactor - Noticias borradas y noticias no publicadas --}}
+                        <li class="nav-item mr-2">
+                            <a href="{{ route('no_published.noticias') }}" class="nav-link {{ $pagina=='no_published.noticias' ? 'active' : '' }}">Noticias no publicadas</a>
+                        </li>
                         <li class="nav-item mr-2">
                             <a href="{{ route('deleted.noticias') }}" class="nav-link {{ $pagina=='deleted.noticias' ? 'active' : '' }}">Noticias borradas</a>
                         </li>
                         {{-- auth if si es administrador --}}
                         <li class="nav-item mr-2">
-                            <a href="{{ route('admin.users') }}" class="nav-link {{ $pagina=='admin.users' ? 'active' : '' }}">Noticias borradas</a>
+                            <a href="{{ route('admin.users') }}" class="nav-link {{ $pagina=='admin.users' ? 'active' : '' }}">Gestión usuarios</a>
                         </li>
                     </ul>
 

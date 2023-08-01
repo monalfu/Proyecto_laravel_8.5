@@ -13,7 +13,10 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'public'),
+
+    // ruta por defecto para las imágenes de las noticias
+    'noticiasImageDir' => 'images/noticias/',
 
     /*
     |--------------------------------------------------------------------------

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Noticia;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -27,7 +28,9 @@ class NoticiasController extends Controller
      */
     public function index()
     {
-        $noticias = Noticia::orderBy('id','DESC')->paginate(config('pagination.noticias'));
+        $noticias = Noticia::orderBy('id','DESC')
+            ->whereNotNull('published_at')
+            ->paginate(config('pagination.noticias'));
 
         return view('noticias.list', ['noticias'=>$noticias]);
     }

@@ -21,16 +21,29 @@
         </div>
     </div>
 
-    <table class="table table-striped table-bordered">
-        <tr class="text-center">
-            {{-- auth para que el id solo lo vea redactor, editor y admin --}}
-            <th>Id</th>
+    @foreach ($noticias as $noticia)
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ $noticia->titulo }}</h5>
+                <p class="card-text" maxlength="300">
+                    @php
+                    $resumenTexto = substr($noticia->texto, 0, 200);
+                    @endphp
+                {{ $resumenTexto }} <a href="{{ route('noticias.show', $noticia->id) }}">[...]</a>
+                </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                {{-- solo lo verán editores, redactores y admin --}}
+                <li class="list-group-item">{{ $noticia->user->name }}</li>
 
-            <th>Imagen</th>
-            <th>Título</th>
-            <th>Tema</th>
-            <th></th>
-        </tr>
-    </table>
+                <li class="list-group-item">{{ $noticia->published_at }}</li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+    @endforeach
 
-@endsection
+    @endsection
