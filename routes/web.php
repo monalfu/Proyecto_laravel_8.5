@@ -10,22 +10,6 @@ use App\Http\Controllers\NoticiasController;
 use App\Models\Noticia;
 
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
 Route::controller(NoticiasController::class)->group(function() {
 
     // Página de listado noticias publicadas
@@ -113,3 +97,21 @@ Route::prefix('admin')->controller(AdminController::class)->middleware('auth', '
 // ruta de usuarios bloqueados, HACER UserController
 Route::get('/bloqueado', [UserController::class, 'blocked'])
     ->name('user.blocked');
+
+Route::controller(HomeController::class)->group(function() {
+    // Creación comentario
+    Route::get('/comentarios/create', 'create')
+    ->name('comentario.create');
+
+    // Guardar noticia
+    Route::post('/comentarios', 'store')
+        ->name('comentarios.store');
+
+    // Borrar comentario
+    Route::get('/borrar/comentario/{comentario}', 'destroy')
+        ->name('comentarios.destroy');
+
+    // Confirmación borrado
+    Route::get('/comentarios/{comentario}/delete', 'delete')
+        ->name('comentarios.delete');
+});

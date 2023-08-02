@@ -28,7 +28,7 @@ class HomeController extends Controller
             ->paginate(config('pagination.noticias', 5));
 
         // noticias borradas
-        $deletedNoticias = $request->user()->noticias()->onlyTrashed()->paginate(config('pagination.noticias', 5))->get();
+        $deletedNoticias = $request->user()->noticias()->onlyTrashed()->paginate(config('pagination.noticias', 5));
 
         // comentarios escritos
         $comentarios = $request->user()->comentarios()->paginate(config('pagination.comentarios', 5));

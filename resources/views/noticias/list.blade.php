@@ -26,7 +26,7 @@
                 <img class="card-img-top mx-auto" style="width: 100vh" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $noticia->titulo }}</h5>
-                    <p class="card-text" maxlength="300">
+                    <p class="card-text">
                         @php
                         $resumenTexto = substr($noticia->texto, 0, 400);
                         @endphp
@@ -45,11 +45,11 @@
                         {{sizeof($noticia->comentarios)}}
                     </div>
                     <div class="mx-2">
-                        <a href="#"><img src="{{ asset('images/buttons/show.png') }}" alt="Detalles noticia" style="width: 30px"></a>
+                        <a href="{{ route('noticias.show', $noticia->id) }}"><img src="{{ asset('images/buttons/show.png') }}" alt="Detalles noticia" style="width: 30px"></a>
                     </div>
                     {{-- auth editor --}}
                     <div class="mx-3">
-                        <a href="#"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar noticia" style="width: 30px"></a>
+                        <a href="{{ route('noticias.destroy', $noticia->id) }}"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar noticia" style="width: 30px"></a>
                     </div>
                 </div>
             </div>

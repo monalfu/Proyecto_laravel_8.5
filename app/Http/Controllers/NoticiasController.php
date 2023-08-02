@@ -32,6 +32,7 @@ class NoticiasController extends Controller
             ->whereNotNull('published_at')
             ->paginate(config('pagination.noticias', 10));
 
+
         return view('noticias.list', ['noticias'=>$noticias]);
 
     }
@@ -155,7 +156,7 @@ class NoticiasController extends Controller
     {
         $noticia->delete();
 
-        return redirect('/noticias');
+        return redirect('/');
     }
 
     public function search(Request $request, $titulo = null, $tema = null) {
