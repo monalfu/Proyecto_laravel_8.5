@@ -94,14 +94,17 @@ class NoticiasController extends Controller
      */
     public function show(Noticia $noticia)
     {
+        // comentarios escritos
+        $comentarios = $noticia->comentarios()->paginate(config('pagination.comentarios', 4));
+
         // usuario identificado
         $authUser = auth()->user();
 
         // incremento +1 cada vez que se abre la noticia publicada y no es el redactor quien la abre
-        if($noticia->published_at != null && $authUser != $noticia->user_id)
-            $noticia->increment('visitas', 1);
+        /*if($noticia->published_at != null && $authUser != $noticia->user_id)
+            $noticia->increment('visitas', 1);*/
 
-        return view('noticias.show', ['noticia'=>$noticia]);
+        return view('noticias.show', ['noticia'=>$noticia, 'comentarios'=>$comentarios]);
     }
 
     /**
@@ -142,7 +145,9 @@ class NoticiasController extends Controller
         $noticia->update($datosNoticia);
 
         return back()
-            ->with('success', "La noticia $noticia->titulo ha sido actualizada.");
+            ->with(
+                'success', 
+                "La noticia $noticia->titulo ha sido actualizada.");
         }
     }
 
@@ -156,7 +161,11 @@ class NoticiasController extends Controller
     {
         $noticia->delete();
 
-        return redirect('/');
+        return redirect('/')
+            ->with(
+                'success',
+                "Noticia $noticia->titulo eliminada correctamente."
+            );
     }
 
     public function search(Request $request, $titulo = null, $tema = null) {

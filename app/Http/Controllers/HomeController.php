@@ -31,7 +31,7 @@ class HomeController extends Controller
         $deletedNoticias = $request->user()->noticias()->onlyTrashed()->paginate(config('pagination.noticias', 5));
 
         // comentarios escritos
-        $comentarios = $request->user()->comentarios()->paginate(config('pagination.comentarios', 5));
+        $comentarios = $request->user()->comentarios()->paginate(config('pagination.comentarios', 4));
 
         return view('home', ['noticias' => $noticias, 'deletedNoticias' => $deletedNoticias, 'comentarios' => $comentarios]);
     }
