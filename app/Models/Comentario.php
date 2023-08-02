@@ -15,4 +15,9 @@ class Comentario extends Model
     public function user() {
         return $this->belongsTo('\App\Models\User');
     }
+
+    // retorna la noticia del comentario
+    public function noticia() {
+        return $this->belongsTo('\App\Models\Noticia');
+    }
 }

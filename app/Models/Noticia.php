@@ -16,4 +16,8 @@ class Noticia extends Model
     public function user() {
         return $this->belongsTo('\App\Models\User');
     }
+
+    public function comentarios() {
+        return $this->hasMany(Comentario::class);
+    }
 }

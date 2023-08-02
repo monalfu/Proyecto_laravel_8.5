@@ -13,12 +13,12 @@
 
     <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}">
 </head>
-<body class="container p-3">
+<body class="container-fluid" style="">
     {{-- PARTE SUPERIOR --}}
     @section('navegacion')
     @php($pagina = Route::currentRouteName())
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm nav-pills">
-            <div class="container">
+            <div class="container-fluis" style="width: 100%">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -92,10 +92,10 @@
     @show
 
     {{-- PARTE CENTRAL --}}
-    <h1 class="my-2">Laranews</h1>
+    <h1 class="my-2 text-center">Laranews</h1>
 
     <main>
-        <h2>@yield('titulo')</h2>
+        <h2 style="margin: 2rem">@yield('titulo')</h2>
 
         @if(Session::has('success'))
             <x-alert type="success" message="{{Session::get('success')}}"/>

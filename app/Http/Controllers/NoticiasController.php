@@ -30,9 +30,19 @@ class NoticiasController extends Controller
     {
         $noticias = Noticia::orderBy('id','DESC')
             ->whereNotNull('published_at')
-            ->paginate(config('pagination.noticias'));
+            ->paginate(config('pagination.noticias', 10));
 
         return view('noticias.list', ['noticias'=>$noticias]);
+
+    }
+
+    public function noPublicadas()
+    {
+        $noticias = Noticia::orderBy('id','DESC')
+            ->whereNull('published_at')
+            ->paginate(config('pagination.noticias', 10));
+
+        return view('noticias.listNoPublicadas', ['noticias'=>$noticias]);
     }
 
     /**

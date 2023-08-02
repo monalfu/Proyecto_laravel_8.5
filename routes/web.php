@@ -27,9 +27,14 @@ Route::get('/', function () {
 });
 */
 Route::controller(NoticiasController::class)->group(function() {
+
     // Página de listado noticias publicadas
     Route::get('/', 'index')
-        ->name('noticias.index');
+    ->name('noticias.index');
+
+    // Página noticias no publicadas
+    Route::get('/noticias/nopublicadas', 'noPublicadas')
+        ->name('no_published.noticias');
 
     // Buscador noticias por título o tema
     Route::get('/noticias/search/{titulo?}/{tema?}')

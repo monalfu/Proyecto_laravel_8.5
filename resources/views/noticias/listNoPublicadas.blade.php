@@ -14,16 +14,16 @@
 
     <div class="row">
         {{-- falta auth para solo usuarios con role redactor --}}
-        <div class="mr-2 text-end">
+        <div class="text-end">
             <p>Nueva noticia
                 <a href="{{ route('noticias.create') }}" class="btn btn-success ml-2">+</a>
             </p>
         </div>
     </div>
-    <div class="row mx-auto" style="width: 60%">
+    <div class="d-flex flex-wrap justify-content-between" style="padding: 0 2rem">
         @foreach ($noticias as $noticia)
-            <div class="card mb-5" style="width: 100%;">
-                <img class="card-img-top mx-auto" style="width: 100vh" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
+            <div class="card mb-5" style="width: 30vw;">
+                <img class="card-img-top mx-auto" style="max-height: 30vw" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $noticia->titulo }}</h5>
                     <p class="card-text" maxlength="300">
@@ -63,3 +63,4 @@
 
 
     @endsection
+
