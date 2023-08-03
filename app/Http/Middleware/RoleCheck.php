@@ -22,10 +22,10 @@ class RoleCheck
     {
         $user = Auth::user();
 
-        if($user->hasRole($roles)) {
+        if(is_null($user) || !$user->hasRole($roles)) {
+            abort(403, "Acceso denegado, no tiene permiso para estar aquí.");
+        } else if ($user->hasRole($roles)) {
             return $next($request);
-        } else if (!$user->hasRole($roles) || is_null()) {
-        abort(403, "Acceso denegado, no tiene permiso para estar aquí.");
         }
     }
 }
