@@ -22,7 +22,8 @@ class NoticiaFactory extends Factory
                 'Política', 'Deporte', 'Economía', 'Cultural', 'Social', 'Entretenimiento', 'Ciencia', 'Sucesos', 'Corazón'
             ]),
             'texto' => $this->faker->realTextBetween(500, 2000, 4),
-            'user_id' => $this->faker->numberBetween(4, 10)
+            'user_id' => $this->faker->numberBetween(4, 10),
+            
 
         ];
     }

@@ -41,7 +41,7 @@ class ComentarioPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->hasRole(['redactor', 'editor', 'administrador', 'lector']);
     }
 
     /**

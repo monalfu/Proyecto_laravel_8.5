@@ -13,6 +13,7 @@
         </div>
     </div>
     <div class="d-flex flex-wrap justify-content-between" style="padding: 0 2rem">
+        {{-- LISTADO NOTICIAS NO PUBLICADAS --}}
         @foreach ($noticias as $noticia)
             <div class="card mb-5" style="width: 30vw;">
                 <img class="card-img-top mx-auto" style="max-height: 30vw" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
@@ -25,19 +26,22 @@
                     {{ $resumenTexto }} <a href="{{ route('noticias.show', $noticia->id) }}">[...]</a>
                     </p>
                 </div>
-                <ul class="list-group list-group-flush">
-                    {{-- solo lo verán editores, redactores y admin --}}
-                    <li class="list-group-item">{{ $noticia->user->name }}</li>
 
+                {{-- INFORMACIÓN NOTICIA --}}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ $noticia->user->name }}</li>
+                    <li class="list-group-item">{{ $noticia->tema }}</li>
                     <li class="list-group-item">{{ $noticia->published_at }}</li>
                 </ul>
+
+                {{-- ICONOS ACCIONES NOTICIA --}}
                 <div class="card-body d-flex">
                     <div class="mx-3">
-                        <img src="{{ asset('images/buttons/comments.png') }}" alt="Icono comentarios">
+                        <img src="{{ asset('images/icons/comments.png') }}" alt="Icono comentarios">
                         {{sizeof($noticia->comentarios)}}
                     </div>
                     <div class="mx-2">
-                        <a href="#"><img src="{{ asset('images/buttons/show.png') }}" alt="Detalles noticia" style="width: 30px"></a>
+                        <a href="{{ route('noticias.show', $noticia->id) }}"><img src="{{ asset('images/buttons/show.png') }}" alt="Detalles noticia" style="width: 30px"></a>
                     </div>
                     {{-- auth editor --}}
                     <div class="mx-3">
@@ -47,10 +51,13 @@
             </div>
         @endforeach
     </div>
+
+    {{-- MOSTRAR TOTAL DE NOTICIAS SE MUESTRAN DEL TOTAL NO PUBLICADAS --}}
     <div>
         <p>Mostrando {{sizeof($noticias)}} de {{$noticias->total()}}</p>
     </div>
 
+    {{-- LINKS PAGINADOR --}}
     <div class="col-10 text-start">{{$noticias->links()}}</div>
 
 

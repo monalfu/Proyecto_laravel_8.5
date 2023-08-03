@@ -3,9 +3,9 @@
 @section('titulo', "$noticia->titulo")
 
 @section('contenido')
-<div class="row mx-auto" style="width: 80%">
+<div class="row mx-auto" style="width: 60%">
     <div class="card mb-5">
-        <img class="card-img-top mx-auto" style="width: 100vh" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
+        <img class="card-img-top" style="width: 100%" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
         <div class="card-body">
             <div class="card-text">{{ $noticia->texto }}</div>
         </div>
@@ -14,22 +14,53 @@
 
             <li class="list-group-item">{{ $noticia->published_at }}</li>
         </ul>
-        <div class="card-body d-flex">
-            <div class="mx-3">
-                <img src="{{ asset('images/icons/comments.png') }}" alt="Icono comentarios">
-                {{sizeof($noticia->comentarios)}}
+        <div class="card-body d-flex justify-content-between">
+            <div class="d-flex">
+                <div class="mx-2">
+                    <a href="{{ route('noticias.show', $noticia->id) }}"><img src="{{ asset('images/buttons/show.png') }}" alt="Detalles noticia" style="width: 30px"></a>
+                </div>
+
+                @can('delete', $noticia)
+                <div class="mx-3">
+                    <a href="{{ route('noticias.destroy', $noticia->id) }}"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar noticia" style="width: 30px"></a>
+                </div>
+                @endcan
+
+                @auth
+                    @if (Auth::user()->hasRole('editor'))
+                        <form class="my-auto d-flex" method="POST" action="{{route('noticias.update', $noticia->id)}}">
+                            @csrf
+                            <input name="_method" type="hidden" value="PUT">
+                            <input name="titulo" type="hidden" value="{{$noticia->titulo}}">
+                            <input name="tema" type="hidden" value="{{$noticia->tema}}">
+                            <input name="texto" type="hidden" value="{{ $noticia->texto }}">
+                            <input name="imagen" type="hidden" value="{{$noticia->imagen}}">                        
+                            
+                            <div class="">
+                                <label for="published">Publicar</label>
+                                <input id="published" name="published" value="1" type="checkbox" class="form-check-input" {{$noticia->published ? "checked" : '' }}>
+                                <input type="hidden" name="published_at" id="published_at">
+                            </div>
+
+                            <div style="margin: 0 1rem">
+                                <label for="rechazado">Revisar</label>
+                                <input id="rechazado" name="rechazado" value="1" type="checkbox" class="form-check-input" {{ $noticia->rejected ? "checked" : '' }}>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-sm">Actualizar</button>
+                        </form>
+                    @endif   
+                @endauth
             </div>
-            {{-- auth editor --}}
-            <div class="mx-3">
-                <a href="{{ route('noticias.destroy', $noticia->id) }}"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar noticia" style="width: 30px"></a>
-            </div>
-            {{-- mostrar si es redactor no está publicada y es suya o si es editor --}}
-            <div class="mx-3">
-                <a href="{{ route('noticias.edit', $noticia->id) }}"><img src="{{ asset('images/buttons/update.png') }}" alt="Actualizar noticia" style="width: 30px"></a>
-            </div>
-            <div class="mx-3">
-                <img src="{{ asset('images/icons/visits.png') }}" alt="Icono visitas">
-                {{ $noticia->visitas }}
+
+            <div class="d-flex">
+                <div class="mx-3">
+                    <img src="{{ asset('images/icons/comments.png') }}" alt="Icono comentarios">
+                    {{sizeof($noticia->comentarios)}}
+                </div>
+                <div class="mx-3">
+                    <img src="{{ asset('images/icons/visits.png') }}" alt="Icono visitas">
+                    {{ $noticia->visitas }}
+                </div>
             </div>
         </div>
     </div>
@@ -61,7 +92,6 @@
             </div>
 
             <form class="my-2 border border-dark border-3 rounded-5 p-5 mx-auto " style="width: 60%" action="{{ route('comentarios.store') }}" method="post">
-
                 @csrf
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <input type="hidden" name="noticia_id" value="{{ $noticia->id }}">

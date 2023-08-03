@@ -10,7 +10,7 @@ class Noticia extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['titulo', 'tema', 'texto', 'imagen', 'user_id', 'rejected'];
+    protected $fillable = ['titulo', 'tema', 'texto', 'imagen', 'user_id', 'rejected', 'published'];
 
     // retorna el redactor de la noticia
     public function user() {

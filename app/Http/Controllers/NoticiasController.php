@@ -29,7 +29,7 @@ class NoticiasController extends Controller
     public function index()
     {
         $noticias = Noticia::orderBy('id','DESC')
-            ->whereNotNull('published_at')
+            ->where('published', 1)
             ->paginate(config('pagination.noticias', 10));
 
 
@@ -40,7 +40,7 @@ class NoticiasController extends Controller
     public function noPublicadas()
     {
         $noticias = Noticia::orderBy('id','DESC')
-            ->whereNull('published_at')
+            ->where('published', 0)
             ->paginate(config('pagination.noticias', 10));
 
         return view('noticias.listNoPublicadas', ['noticias'=>$noticias]);
@@ -139,24 +139,23 @@ class NoticiasController extends Controller
      */
     public function update(Request $request, Noticia $noticia)
     {
-        // VALIDACIÓN
-
-        $datosNoticia = $request->all();
-
+        $datosNoticia = $request->all() + ['published' => 0, 'rejected' => 0];
+        
         if($request->hasFile('imagen')) {
             $imagenNueva = $request->file('imagen')->store(config('filesystems.noticiasImageDir'));
-
+            
             Storage::delete(config('filesystems.noticiasImageDir') . '/' . $noticia->imagen);
-
+            
             $datosNoticia['imagen'] = pathinfo($imagenNueva, PATHINFO_BASENAME);
+        }
 
         $noticia->update($datosNoticia);
 
         return back()
             ->with(
                 'success',
-                "La noticia $noticia->titulo ha sido actualizada.");
-        }
+                "La noticia $noticia->titulo ha sido actualizada."
+            );
     }
 
     /**
