@@ -59,13 +59,25 @@ class User extends Authenticatable
     public function hasRole($roleNames):bool {
         if(!is_array($roleNames))
             $roleNames = [$roleNames];
+        
+            // ¡¡NO FUNCIONA!!
+        if(is_null($roleNames))
+            $roleNames = ['invitado'];
 
-        foreach($this->roles as $role) {
+            foreach($this->roles as $role) {
             if(in_array($role->role, $roleNames))
                 return true;
         }
 
         return false;
+    }
+
+    public function remainingRoles() {
+        $actualRoles = $this->roles; // user roles
+        $allRoles = Role::all(); // todos los roles
+
+        // retorna todos los roles menos los que ya tiene el usuario
+        return $allRoles->diff($actualRoles);
     }
 
     public function isOwner(Noticia $noticia):bool {

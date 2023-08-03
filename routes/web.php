@@ -26,8 +26,9 @@ Route::controller(NoticiasController::class)->group(function() {
 
     // Creación noticias
     Route::get('/noticias/create', 'create')
-        ->name('noticias.create');
-        
+        ->name('noticias.create')
+        ->middleware('roleCheck:redactor');
+
     // Detalles de una noticia
     Route::get('/noticias/{noticia}', 'show')
         ->name('noticias.show');
