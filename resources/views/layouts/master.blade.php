@@ -28,25 +28,33 @@
                         <li class="nav-item mr-2">
                             <a href="{{ url('/')}}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Noticias</a>
                         </li>
-                        {{-- auth if si es redactor --}}
+                        
+                        @auth
+                        @if (Auth::user()->hasRole('redactor'))
                         <li class="nav-item mr-2">
                             <a href="{{ route('noticias.create') }}" class="nav-link {{ $pagina=='noticias.create' ? 'active' : '' }}">Crear noticia</a>
                         </li>
-                        {{-- OPCIONAL: auth is si es editor --}}
-                        {{-- <li class="nav-item mr-2">
-                            <a href="{{ route('noticias.index') }}" class="nav-link {{ $pagina=='noticias.list' ? 'active' : '' }}">Noticias sin publicar</a>
-                        </li> --}}
-                        {{-- auth if si es editor y redactor - Noticias borradas y noticias no publicadas --}}
+                        @endif
+                        @endauth
+
+                        @auth
+                        @if (Auth::user()->hasRole(['administrador', 'editor']))
                         <li class="nav-item mr-2">
                             <a href="{{ route('no_published.noticias') }}" class="nav-link {{ $pagina=='no_published.noticias' ? 'active' : '' }}">Noticias no publicadas</a>
                         </li>
                         <li class="nav-item mr-2">
                             <a href="{{ route('deleted.noticias') }}" class="nav-link {{ $pagina=='deleted.noticias' ? 'active' : '' }}">Noticias borradas</a>
                         </li>
-                        {{-- auth if si es administrador --}}
+                        @endif
+                        @endauth
+                        
+                        @auth
+                        @if (Auth::user()->hasRole('administrador'))
                         <li class="nav-item mr-2">
                             <a href="{{ route('admin.users') }}" class="nav-link {{ $pagina=='admin.users' ? 'active' : '' }}">Gestión usuarios</a>
                         </li>
+                        @endif
+                        @endauth
                     </ul>
 
                     {{-- Right side of navbar --}}

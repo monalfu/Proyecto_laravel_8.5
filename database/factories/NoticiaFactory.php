@@ -19,7 +19,7 @@ class NoticiaFactory extends Factory
         return [
             'titulo' => $this->faker->unique()->realTextBetween(10, 40, 4),
             'tema' => $this->faker->randomElement([
-                'Política', 'Deporte', 'Economía', 'Cultural', 'Social', 'Entretenimiento', 'Cinetífica', 'Sucesos', 'Corazón'
+                'Política', 'Deporte', 'Economía', 'Cultural', 'Social', 'Entretenimiento', 'Ciencia', 'Sucesos', 'Corazón'
             ]),
             'texto' => $this->faker->realTextBetween(500, 2000, 4),
             'user_id' => $this->faker->numberBetween(4, 10)

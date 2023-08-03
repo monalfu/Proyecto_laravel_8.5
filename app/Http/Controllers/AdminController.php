@@ -25,7 +25,7 @@ class AdminController extends Controller
 
         $deletedNoticias = $request->user->noticias()->onlyTrashed()->get();
 
-        return view('admin.users.show', ['user' => $user, 'dulces' => $noticias, 'deletedNoticias' => $deletedNoticias]);
+        return view('admin.users.show', ['user' => $user, 'noticias' => $noticias, 'deletedNoticias' => $deletedNoticias]);
     }
 
     // búsqueda de usuarios

@@ -3,7 +3,7 @@
 @section('titulo', "Editar noticia $noticia->titulo")
 
 @section('contenido')
-<form class="my-2 border p-5" method="POST" action="{{route('dulces.update', $dulce->id)}}" enctype="multipart/form-data" >
+<form class="my-2 border p-5" method="POST" action="{{route('noticias.update', $noticia->id)}}" enctype="multipart/form-data" >
     @csrf
     <input name="_method" type="hidden" value="PUT">
     <div class="form-group row">
@@ -17,7 +17,7 @@
     <div class="form-group d-flex align-items-center">
         <div>
             <p>Foto actual:</p>
-            <img class="rounded" style="max-width: 80%" src="{{$noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $dulce->imagen : asset('storage/' . config('filesystems.dulcesImageDir')) . '/default.png'}}" alt="Imagen de {{$dulce->nombre}}" title="Imagen de {{$dulce->nombre}}">
+            <img class="rounded" style="max-width: 80%" src="{{$noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.png'}}" alt="Imagen de {{$noticia->nombre}}" title="Imagen de {{$noticia->nombre}}">
         </div>
         <div>
             @if ($noticia->imagen)

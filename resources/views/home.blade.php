@@ -99,7 +99,7 @@
             </tr>
             @foreach ($comentarios as $comentario)
             <tr class="text-center">
-                <td>{{ $noticia->titulo }}</td>
+                <td>{{ $comentario->noticia->titulo }}</td>
                 <td>{{ $comentario->texto }}</td>
                 <td>
                     <a href="{{ route('comentarios.delete',$comentario->id) }}">
