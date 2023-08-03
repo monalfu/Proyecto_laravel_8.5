@@ -11,7 +11,7 @@
         </div>
         <div class="form-group row">
             <label for="temas">Tema:</label>
-            <select name="temas" id="temas" placeholder="Escoge una opcón" required>
+            <select name="tema" id="tema" placeholder="Escoge una opcón" required>
                 <option selected="true" disabled>Escoge un tema</option>
                 <option value="politica">Política</option>
                 <option value="deporte">Deporte</option>

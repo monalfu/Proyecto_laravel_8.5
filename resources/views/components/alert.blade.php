@@ -1,5 +1,5 @@
 <div class="alert alert-{{$type}}">
-    <p>{{message}}</p>
+    <p>{{$message}}</p>
 
     {{$slot}}
 </div>

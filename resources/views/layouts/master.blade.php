@@ -28,7 +28,7 @@
                         <li class="nav-item mr-2">
                             <a href="{{ url('/')}}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Noticias</a>
                         </li>
-                        
+
                         @auth
                         @if (Auth::user()->hasRole('redactor'))
                         <li class="nav-item mr-2">
@@ -47,7 +47,7 @@
                         </li>
                         @endif
                         @endauth
-                        
+
                         @auth
                         @if (Auth::user()->hasRole('administrador'))
                         <li class="nav-item mr-2">
@@ -101,9 +101,10 @@
     @show
 
     {{-- PARTE CENTRAL --}}
-    <h1 class="my-2 text-center">Laranews</h1>
 
     <main>
+        <h1 class="my-2 text-center">Laranews</h1>
+        
         <h2 style="margin: 2rem">@yield('titulo')</h2>
 
         @if(Session::has('success'))

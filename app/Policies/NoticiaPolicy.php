@@ -41,7 +41,7 @@ class NoticiaPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('redactor');
+        return $user->hasRole(['redactor']);
     }
 
     /**

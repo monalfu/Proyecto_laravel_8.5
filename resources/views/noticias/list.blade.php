@@ -13,15 +13,14 @@
     </form>
 
     <div class="row">
-        @auth
-        @if (Auth::user()->hasRole('redactor'))
+
+        @can ('create', App\Models\Noticia::class)
         <div class="mr-2 text-end">
             <p>Nueva noticia
                 <a href="{{ route('noticias.create') }}" class="btn btn-success ml-2">+</a>
             </p>
         </div>
-        @endif
-        @endauth
+        @endcan
     </div>
     <div class="row mx-auto" style="width: 60%">
         @foreach ($noticias as $noticia)

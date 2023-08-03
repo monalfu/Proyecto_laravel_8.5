@@ -53,7 +53,7 @@ class NoticiasController extends Controller
      */
     public function create()
     {
-
+        
         return view('noticias.create');
     }
 
@@ -146,7 +146,7 @@ class NoticiasController extends Controller
 
         return back()
             ->with(
-                'success', 
+                'success',
                 "La noticia $noticia->titulo ha sido actualizada.");
         }
     }
