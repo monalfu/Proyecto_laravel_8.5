@@ -26,7 +26,7 @@
                     {{-- Left Side of Navbar --}}
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item mr-2">
-                            <a href="{{ url('/')}}" class="nav-link {{ $pagina=='portada' ? 'active' : '' }}">Noticias</a>
+                            <a href="{{ url('/')}}" class="nav-link {{ $pagina=='noticias.index' ? 'active' : '' }}">Noticias</a>
                         </li>
 
                         @auth
@@ -55,6 +55,10 @@
                         </li>
                         @endif
                         @endauth
+
+                        <li class="nav-item mr-2">
+                            <a href="{{ route('contacto') }}" class="nav-link {{ $pagina=='contacto' ? 'active' : '' }}">Contacto</a>
+                        </li>
                     </ul>
 
                     {{-- Right side of navbar --}}
@@ -104,7 +108,7 @@
 
     <main>
         <h1 class="my-2 text-center">Laranews</h1>
-        
+
         <h2 style="margin: 2rem">@yield('titulo')</h2>
 
         @if(Session::has('success'))

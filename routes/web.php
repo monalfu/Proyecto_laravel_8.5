@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactoController;
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\NoticiasController;
 use App\Models\Noticia;
 
@@ -28,6 +30,9 @@ Route::controller(NoticiasController::class)->group(function() {
     Route::get('/noticias/create', 'create')
         ->name('noticias.create')
         ->middleware('roleCheck:redactor');
+
+    Route::get('noticias/borradas', 'noticiasBorradas')
+        ->name('deleted.noticias');
 
     // Detalles de una noticia
     Route::get('/noticias/{noticia}', 'show')
@@ -61,11 +66,21 @@ Route::controller(NoticiasController::class)->group(function() {
     Route::get('/noticias/{noticia}/delete', 'delete')
         ->name('noticias.delete');
 
-    Route::get('noticias/borradas')
-        ->name('deleted.noticias');
 });
 
-Auth::routes();
+/*
+Route::post('/guardarcomentario', [ComentarioController::class, 'store'])->name('comentarios.store');
+*/
+Route::controller(ContactoController::class)->group(function(){
+
+    Route::get('/contacto', 'index')
+            ->name('contacto');
+
+    Route::post('/contacto', 'send')
+            ->name('contacto.email');
+});
+
+Auth::routes(['verify'=>true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -87,11 +102,11 @@ Route::prefix('admin')->controller(AdminController::class)->middleware('auth', '
     ->name('admin.users.search');
 
     // añadir rol
-    Route::get('role', 'setRole')
+    Route::post('role', 'setRole')
     ->name('admin.user.setRole');
 
     // eliminar rol
-    Route::get('role', 'removeRole')
+    Route::delete('role', 'removeRole')
     ->name('admin.user.removeRole');
 });
 
@@ -99,7 +114,9 @@ Route::prefix('admin')->controller(AdminController::class)->middleware('auth', '
 Route::get('/bloqueado', [UserController::class, 'blocked'])
     ->name('user.blocked');
 
-Route::controller(HomeController::class)->group(function() {
+
+
+Route::controller(ComentarioController::class)->group(function() {
     // Creación comentario
     Route::get('/comentarios/create', 'create')
     ->name('comentario.create');
@@ -116,3 +133,4 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/comentarios/{comentario}/delete', 'delete')
         ->name('comentarios.delete');
 });
+

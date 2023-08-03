@@ -4,14 +4,6 @@
 
 @section('contenido')
 
-    <div class="row">
-        {{-- falta auth para solo usuarios con role redactor --}}
-        <div class="text-end">
-            <p>Nueva noticia
-                <a href="{{ route('noticias.create') }}" class="btn btn-success ml-2">+</a>
-            </p>
-        </div>
-    </div>
     <div class="d-flex flex-wrap justify-content-between" style="padding: 0 2rem">
         @foreach ($noticias as $noticia)
             <div class="card mb-5" style="width: 30vw;">

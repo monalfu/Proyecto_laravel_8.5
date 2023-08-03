@@ -3,14 +3,6 @@
 @section('titulo', "Listado noticias")
 
 @section('contenido')
-    <form action="{{ route('noticias.search') }}" method="GET" class="col-6 row" style="margin-left: 2rem">
-        <input name="titulo" type="text" class="col form-control mr-2 mb-2" placeholder="Título" maxlength="40" value="{{$titulo ?? ''}}">
-        <input type="text" name="tema" class="col form-control mr-2 mb-2" style="margin-left: 2rem" placeholder="Tema" maxlength="20" value="{{$tema ?? ''}}">
-        <button type="submit" class="col btn btn-primary mr-2 mb-2" style="margin-left: 2rem; max-width: fit-content">Buscar</button>
-        <a href="{{ route('noticias.index') }}">
-            <button type="button" class="col btn btn-primary mb-2">Quitar filtro</button>
-        </a>
-    </form>
 
     <div class="row">
 
@@ -36,22 +28,26 @@
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    {{-- solo lo verán editores, redactores y admin --}}
+                    <li class="list-group-item">{{ $noticia->tema }}</li>
                     <li class="list-group-item">{{ $noticia->user->name }}</li>
-
                     <li class="list-group-item">{{ $noticia->published_at }}</li>
                 </ul>
                 <div class="card-body d-flex">
                     <div class="mx-3">
-                        <img src="{{ asset('images/buttons/comments.png') }}" alt="Icono comentarios">
+                        <img src="{{ asset('images/icons/comments.png') }}" alt="Icono comentarios">
                         {{sizeof($noticia->comentarios)}}
                     </div>
                     <div class="mx-2">
                         <a href="{{ route('noticias.show', $noticia->id) }}"><img src="{{ asset('images/buttons/show.png') }}" alt="Detalles noticia" style="width: 30px"></a>
                     </div>
-                    {{-- auth editor --}}
+                    @can('delete', $noticia)
                     <div class="mx-3">
                         <a href="{{ route('noticias.destroy', $noticia->id) }}"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar noticia" style="width: 30px"></a>
+                    </div>
+                    @endcan
+                    <div class="mx-3">
+                        <img src="{{ asset('images/icons/visits.png') }}" alt="Icono visitas">
+                        {{ $noticia->visitas }}
                     </div>
                 </div>
             </div>

@@ -46,6 +46,15 @@ class NoticiasController extends Controller
         return view('noticias.listNoPublicadas', ['noticias'=>$noticias]);
     }
 
+    public function noticiasBorradas()
+    {
+        $noticias = Noticia::orderBy('id','DESC')
+            ->whereNotNull('deleted_at')
+            ->paginate(config('pagination.noticias', 10));
+
+        return view('noticias.deleted', ['noticias'=>$noticias]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -53,7 +62,7 @@ class NoticiasController extends Controller
      */
     public function create()
     {
-        
+
         return view('noticias.create');
     }
 
@@ -92,17 +101,16 @@ class NoticiasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Noticia $noticia)
+    public function show(Noticia $noticia, User $user)
     {
         // comentarios escritos
         $comentarios = $noticia->comentarios()->paginate(config('pagination.comentarios', 4));
 
         // usuario identificado
-        $authUser = auth()->user();
+        // $authUser = auth()->user();
 
-        // incremento +1 cada vez que se abre la noticia publicada y no es el redactor quien la abre
-        /*if($noticia->published_at != null && $authUser != $noticia->user_id)
-            $noticia->increment('visitas', 1);*/
+        if($noticia->published_at && $user->id != $noticia->user_id)
+            $noticia->increment('visitas', 1);
 
         return view('noticias.show', ['noticia'=>$noticia, 'comentarios'=>$comentarios]);
     }

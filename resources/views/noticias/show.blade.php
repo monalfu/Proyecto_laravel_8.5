@@ -10,14 +10,13 @@
             <div class="card-text">{{ $noticia->texto }}</div>
         </div>
         <ul class="list-group list-group-flush">
-            {{-- solo lo verán editores, redactores y admin --}}
             <li class="list-group-item">{{ $noticia->user->name }}</li>
 
             <li class="list-group-item">{{ $noticia->published_at }}</li>
         </ul>
         <div class="card-body d-flex">
             <div class="mx-3">
-                <img src="{{ asset('images/buttons/comments.png') }}" alt="Icono comentarios">
+                <img src="{{ asset('images/icons/comments.png') }}" alt="Icono comentarios">
                 {{sizeof($noticia->comentarios)}}
             </div>
             {{-- auth editor --}}
@@ -28,6 +27,10 @@
             <div class="mx-3">
                 <a href="{{ route('noticias.edit', $noticia->id) }}"><img src="{{ asset('images/buttons/update.png') }}" alt="Actualizar noticia" style="width: 30px"></a>
             </div>
+            <div class="mx-3">
+                <img src="{{ asset('images/icons/visits.png') }}" alt="Icono visitas">
+                {{ $noticia->visitas }}
+            </div>
         </div>
     </div>
 </div>
@@ -37,7 +40,7 @@
         <h4>Comentarios</h4>
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-lg-10 col-xl-8">
-                @foreach ($comentarios as $comentario)                        
+                @forelse ($comentarios as $comentario)
                 <div class="card">
                     <div class="card-body">
                         <h6 class="fw-bold text-primary mb-1">{{ $comentario->user->name }}</h6>
@@ -46,14 +49,29 @@
                 </div>
                 <p class="mt-3 mb-4 pb-2">{{ $comentario->texto }}</p>
                     @auth
-                    @if (Auth::user()->can('delete', $comentario))
+                    @can ('delete', $comentario)
                     <div class="small d-flex justify-content-start">
                         <a href="{{ route('comentarios.destroy', $comentario->id) }}"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar comentario" style="width: 30px"></a>
                     </div>
-                    @endif
+                    @endcan
                     @endauth
-                @endforeach
+                @empty
+                    <div>No hay comentarios en esta noticia.</div>
+                @endforelse
             </div>
+
+            <form class="my-2 border border-dark border-3 rounded-5 p-5 mx-auto " style="width: 60%" action="{{ route('comentarios.store') }}" method="post">
+
+                @csrf
+                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                    <input type="hidden" name="noticia_id" value="{{ $noticia->id }}">
+                    <div class="form-group row">
+                        <textarea name="texto" id="" cols="30" rows="6" class="up form-control col-sm-10" style="resize: none" placeholder="Escribe tu mensaje"></textarea>
+                    </div>
+                    <div class="form-group row">
+                        <button type="submit" class="btn btn-success m-2 mt-5">Enviar</button>
+                    </div>
+                </form>
             <div>
                 <p>Mostrando {{sizeof($comentarios)}} de {{$comentarios->total()}}</p>
             </div>

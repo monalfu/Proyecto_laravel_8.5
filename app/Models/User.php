@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -59,7 +59,7 @@ class User extends Authenticatable
     public function hasRole($roleNames):bool {
         if(!is_array($roleNames))
             $roleNames = [$roleNames];
-        
+
             // ¡¡NO FUNCIONA!!
         if(is_null($roleNames))
             $roleNames = ['invitado'];
@@ -82,6 +82,10 @@ class User extends Authenticatable
 
     public function isOwner(Noticia $noticia):bool {
         return $this->id == $noticia->user_id;
+    }
+
+    public function isNoOwner(Noticia $noticia):bool {
+        return $this->id != $noticia->user_id;
     }
 
 }

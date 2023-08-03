@@ -7,17 +7,33 @@
     @csrf
     <input name="_method" type="hidden" value="PUT">
     <div class="form-group row">
-        <label for="inputTitulo" class="col-sm-2 col-form-label">Titulo</label>
-        <input type="text" name="titulo" class="up form-control col-sm-10" id="inputTitulo" placeholder="{{old('titulo')}}" maxlength="30" value="{{$noticia->titulo}}" required>
+        <label for="inputTitulo" class="col-sm-2 col-form-label">Título:</label>
+        <input name="titulo" type="text" class="up form-control col-sm-10" id="inputTitulo" placeholder="{{old('titulo')}}" value="{{$noticia->titulo}}" maxlength="300" required>
     </div>
     <div class="form-group row">
-        <label for="inputTexto" class="col-sm-2 col-form-label">Porciones</label>
-        <textarea name="texto" type="text" class="up form-control col-sm-10" id="inputTexto" placeholder="{{old('texto')}}" value="{{$noticia->texto}}"  required>
+        <label for="temas">Tema:</label>
+        <select name="tema" id="tema" required>
+            <option selected="true" disabled>{{ $noticia->tema }}</option>
+            <option value="politica">Política</option>
+            <option value="deporte">Deporte</option>
+            <option value="economia">Economía</option>
+            <option value="cultural">Cultural</option>
+            <option value="social">Social</option>
+            <option value="entretenimiento">Entretenimiento</option>
+            <option value="ciencia">Ciencia</option>
+            <option value="suceso">Sucesos</option>
+            <option value="corazon">Corazón</option>
+        </select>
     </div>
-    <div class="form-group d-flex align-items-center">
+    <div class="form-group row">
+        <label for="inputTexto" class="col-sm-2 col-form-label">Texto:</label>
+        <textarea name="texto" id="" cols="30" rows="6" class="up form-control col-sm-10" style="resize: none" placeholder="{{old('texto')}}"> {{ $noticia->texto }}</textarea>
+    </div>
+
+    <div class="form-group d-flex align-items-center justify-content-around">
         <div>
             <p>Foto actual:</p>
-            <img class="rounded" style="max-width: 80%" src="{{$noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.png'}}" alt="Imagen de {{$noticia->nombre}}" title="Imagen de {{$noticia->nombre}}">
+            <img class="rounded mr-3" style="max-width: 30rem" src="{{$noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen de {{$noticia->nombre}}" title="Imagen de {{$noticia->nombre}}">
         </div>
         <div>
             @if ($noticia->imagen)

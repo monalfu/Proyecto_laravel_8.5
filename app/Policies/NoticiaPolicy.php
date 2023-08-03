@@ -53,7 +53,7 @@ class NoticiaPolicy
      */
     public function update(User $user, Noticia $noticia)
     {
-        return $noticia->published_at != null && $user->isOwner($noticia);
+        return $user->hasRole('editor') || ($user->isOwner($noticia) && $noticia->published_at == NULL);
     }
 
     /**
@@ -65,7 +65,7 @@ class NoticiaPolicy
      */
     public function delete(User $user, Noticia $noticia)
     {
-        return $user->hasRole('editor') || $user->isOwner($noticia);
+        return $user->hasRole('editor') || ($user->isOwner($noticia) && $noticia->published_at == NULL);
     }
 
     /**

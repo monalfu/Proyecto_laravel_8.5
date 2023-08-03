@@ -16,7 +16,7 @@ class AdminController extends Controller
         $users = User::orderBy('name', 'ASC')
             ->paginate(config('pagination.users, 10'));
 
-        return view('admin.users,list', ['users' => $users]);
+        return view('admin.users.list', ['users' => $users]);
     }
 
     // mostrar un usuario
