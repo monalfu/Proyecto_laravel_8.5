@@ -49,7 +49,8 @@ class NoticiasController extends Controller
     public function noticiasBorradas()
     {
         $noticias = Noticia::orderBy('id','DESC')
-            ->whereNotNull('deleted_at')
+            ->where('deleted_at', '>', 0)
+            ->withTrashed()
             ->paginate(config('pagination.noticias', 10));
 
         return view('noticias.deleted', ['noticias'=>$noticias]);
@@ -168,7 +169,7 @@ class NoticiasController extends Controller
     {
         $noticia->delete();
 
-        return redirect('/')
+        return back()
             ->with(
                 'success',
                 "Noticia $noticia->titulo eliminada correctamente."
@@ -218,8 +219,8 @@ class NoticiasController extends Controller
 
     public function delete(Request $request, Noticia $noticia)
     {
-        // HACER POLICI
-        $request->user()->can('delete', $noticia);
+    
+        //$request->user()->can('delete', $noticia);
 
         return view('noticias.delete', ['noticia'=>$noticia]);
     }

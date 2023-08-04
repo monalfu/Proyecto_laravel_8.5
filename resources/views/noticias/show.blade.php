@@ -66,19 +66,21 @@
     </div>
 </div>
 
+{{-- VISTA DE COMENTARIOS --}}
 <section style="background-color: #eee;">
     <div class="container my-5 py-5">
         <h4>Comentarios</h4>
         <div class="row d-flex justify-content-center">
-            <div class="col-md-12 col-lg-10 col-xl-8">
+            <div class="card col-md-12 col-lg-10 col-xl-8  mb-3">
                 @forelse ($comentarios as $comentario)
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="fw-bold text-primary mb-1">{{ $comentario->user->name }}</h6>
-                        <p class="text-muted small mb-0">Publicado {{ $comentario->created_at }}</p>
+                <div class="border-bottom border-dark border-2">
+                    <div class="">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-primary mb-1">{{ $comentario->user->name }}</h6>
+                            <p class="text-muted small mb-0">Publicado {{ $comentario->created_at }}</p>
+                        </div>
                     </div>
-                </div>
-                <p class="mt-3 mb-4 pb-2">{{ $comentario->texto }}</p>
+                    <p class="mt-3 mb-4 pb-2">{{ $comentario->texto }}</p>
                     @auth
                     @can ('delete', $comentario)
                     <div class="small d-flex justify-content-start">
@@ -86,26 +88,40 @@
                     </div>
                     @endcan
                     @endauth
+                </div>
                 @empty
                     <div>No hay comentarios en esta noticia.</div>
                 @endforelse
             </div>
 
+            {{-- CUADRO PARA AÑADIR COMENTARIOS --}}
+            @can ('create', \App\Models\Comentario::class)
             <form class="my-2 border border-dark border-3 rounded-5 p-5 mx-auto " style="width: 60%" action="{{ route('comentarios.store') }}" method="post">
                 @csrf
-                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                    <input type="hidden" name="noticia_id" value="{{ $noticia->id }}">
-                    <div class="form-group row">
-                        <textarea name="texto" id="" cols="30" rows="6" class="up form-control col-sm-10" style="resize: none" placeholder="Escribe tu mensaje"></textarea>
-                    </div>
-                    <div class="form-group row">
-                        <button type="submit" class="btn btn-success m-2 mt-5">Enviar</button>
-                    </div>
-                </form>
-            <div>
+                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                <input type="hidden" name="noticia_id" value="{{ $noticia->id }}">
+                <div class="form-group row">
+                    <textarea name="texto" id="" cols="30" rows="6" class="up form-control col-sm-10" style="resize: none" placeholder="Escribe tu mensaje"></textarea>
+                </div>
+                <div class="form-group row">
+                    <button type="submit" class="btn btn-success m-2 mt-5">Enviar</button>
+                </div>
+            </form>
+            @endcan
+
+            {{-- PAGINACIÓN COMENTARIOS Y TOTAL --}}
+            <div style="width: 60%">
                 <p>Mostrando {{sizeof($comentarios)}} de {{$comentarios->total()}}</p>
             </div>
-            <div class="col-10 text-start">{{$comentarios->links()}}</div>
+            <div class="col-10 text-start" style="width:60%">{{$comentarios->links()}}</div>
+
+            {{-- SI NO ESTÁ LOGUEADO ENVIAR A REGISTRO --}}
+            @guest
+            <div class="card mx-auto text-center" style="width: 60%">        
+                <h6 class="my-2">Si quieres escribir un comentario</h6>
+                <a class="btn btn-primary mx-auto my-2" style="width: fit-content" href="{{ route('register') }}">Regístrate</a>
+            </div>
+            @endguest
         </div>
     </div>
   </section>

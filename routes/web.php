@@ -59,11 +59,11 @@ Route::controller(NoticiasController::class)->group(function() {
         ->name('noticias.purge');
 
     // Restauración noticia eliminada
-    Route::get('/noticias/{noticia}/restore', 'restore')
+    Route::get('/noticias/restore/{noticia}', 'restore')
         ->name('noticias.restore');
 
     // Confirmación borrado definitivo
-    Route::get('/noticias/{noticia}/delete', 'delete')
+    Route::get('/noticias/delete/{noticia}', 'delete')
         ->name('noticias.delete');
 
 });

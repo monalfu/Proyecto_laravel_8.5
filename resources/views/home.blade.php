@@ -76,12 +76,12 @@
                     <td class="text-center align-middle">
                         @if ($noticia->published_at != NULL)
                             <div class="text-center align-middle">
-                                <img style="width: 40px" src="{{asset('images/icons/check.png')}}" title="Noticia publicada">
+                                <img style="width: 40px" src="{{ asset('images/icons/check.png') }}" title="Noticia publicada">
                                 <p>{{ $noticia->published_at }}</p>
                             </div>
                         @else
                             <div class="text-center align-middle">
-                                <img style="width: 40px" src="{{asset('images/icons/noCheck.png')}}" title="Noticia publicada">
+                                <img style="width: 40px" src="{{ asset('images/icons/noCheck.png') }}" title="Noticia publicada">
                             </div>
                         @endif
                     </td>

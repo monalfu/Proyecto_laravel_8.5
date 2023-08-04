@@ -12,7 +12,7 @@
             </p>
         </div>
     </div>
-    <div class="d-flex flex-wrap justify-content-between" style="padding: 0 2rem">
+    <div class="d-flex flex-wrap justify-content-around" style="padding: 0 2rem">
         {{-- LISTADO NOTICIAS NO PUBLICADAS --}}
         @foreach ($noticias as $noticia)
             <div class="card mb-5" style="width: 30vw;">
@@ -35,17 +35,23 @@
                 </ul>
 
                 {{-- ICONOS ACCIONES NOTICIA --}}
-                <div class="card-body d-flex">
-                    <div class="mx-3">
-                        <img src="{{ asset('images/icons/comments.png') }}" alt="Icono comentarios">
-                        {{sizeof($noticia->comentarios)}}
-                    </div>
+                <div class="card-body d-flex justify-content-between" style="max-width: 100%">
                     <div class="mx-2">
                         <a href="{{ route('noticias.show', $noticia->id) }}"><img src="{{ asset('images/buttons/show.png') }}" alt="Detalles noticia" style="width: 30px"></a>
                     </div>
-                    {{-- auth editor --}}
-                    <div class="mx-3">
-                        <a href="#"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar noticia" style="width: 30px"></a>
+                    <div class="d-flex">
+                        <div class="mx-3">
+                            <img src="{{ asset('images/icons/comments.png') }}" alt="Icono comentarios">
+                            {{sizeof($noticia->comentarios)}}
+                        </div>
+                        @can('delete', $noticia)
+                        @if ($noticia->rejected == 1)
+                            <img src="{{ asset('images/icons/noCheck.png') }}" alt="Rechazada" style="width: 20px">
+                        @endif
+                        <div class="mx-3">
+                            <a href="{{ route('noticias.destroy', $noticia->id) }}"><img src="{{ asset('images/buttons/delete.png') }}" alt="Borrar noticia" style="width: 30px"></a>
+                        </div>
+                        @endcan
                     </div>
                 </div>
             </div>
