@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Routing\Controller;
-use PHPUnit\Framework\Error\Notice;
 
 // autorizaciones en formRequest o aquí mismo
 // hacer policies: restore, delete
@@ -26,6 +25,7 @@ class NoticiasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // Lista noticias publicadas y muestra en página principal
     public function index()
     {
         $noticias = Noticia::orderBy('id','DESC')
@@ -37,6 +37,7 @@ class NoticiasController extends Controller
 
     }
 
+    // Método que lista las noticias no publicadas y vuestra la vista
     public function noPublicadas()
     {
         $noticias = Noticia::orderBy('id','DESC')
@@ -107,10 +108,11 @@ class NoticiasController extends Controller
         // comentarios escritos
         $comentarios = $noticia->comentarios()->paginate(config('pagination.comentarios', 4));
 
-        // usuario identificado
-        // $authUser = auth()->user();
+        // id usuario identificado
+        $authId = auth()->id();
 
-        if($noticia->published_at && $user->id != $noticia->user_id)
+        // Si la noticia está publicada y no la visualiza el creador incrementar en 1 las visitas
+        if($noticia->published_at && $noticia->user_id != $authId)
             $noticia->increment('visitas', 1);
 
         return view('noticias.show', ['noticia'=>$noticia, 'comentarios'=>$comentarios]);
@@ -165,7 +167,8 @@ class NoticiasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Noticia $noticia)
+    // Soft delete, método para eliminar pero no de la base de datos
+     public function destroy(Noticia $noticia)
     {
         $noticia->delete();
 
@@ -176,6 +179,7 @@ class NoticiasController extends Controller
             );
     }
 
+    // Método de búsqueda de noticias. REVISAR para que busque según listado
     public function search(Request $request, $titulo = null, $tema = null) {
         $titulo = $titulo ?? $request->input('titulo', '');
         $tema = $tema ?? $request->input('tema', '');
@@ -217,6 +221,7 @@ class NoticiasController extends Controller
         return back()->with('success', "Noticia $noticia->titulo eliminada correctamente.");
     }
 
+    // Confirmación para eliminar al querer realizar el purge
     public function delete(Request $request, Noticia $noticia)
     {
     
