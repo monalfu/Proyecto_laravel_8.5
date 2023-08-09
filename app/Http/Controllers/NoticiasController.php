@@ -180,16 +180,34 @@ class NoticiasController extends Controller
     }
 
     // Método de búsqueda de noticias. REVISAR para que busque según listado
-    public function search(Request $request, $titulo = null, $tema = null) {
+    public function searchPublicadas(Request $request, $titulo = null, $tema = null) {
         $titulo = $titulo ?? $request->input('titulo', '');
         $tema = $tema ?? $request->input('tema', '');
 
         $noticias = Noticia::where('titulo', 'like', "%$titulo%")
-            ->where('tema', 'like', '%$tema%')
+            ->where('tema', 'like', "%$tema%")
+            ->where('published', '=', 1)
             ->paginate(config('paginator.noticias', 5))
             ->appends(['titulo' => $titulo, 'tema' => $tema]);
 
         return view('noticias.list', ['noticias' => $noticias, 'titulo' => $titulo, 'tema' => $tema]);
+    }
+
+    // Método de búsqueda de noticias. REVISAR para que busque según listado
+    public function searchNoPublicadas(Request $request, $titulo = null, $tema = null, $redactor = null) {
+        $titulo = $titulo ?? $request->input('titulo', '');
+        $tema = $tema ?? $request->input('tema', '');
+        // $redactor = $redactor ?? $request->input('name', '');
+        // $idRedactor = User::where('name', 'like', "%$redactor%")->get();
+
+        $noticias = Noticia::where('titulo', 'like', "%$titulo%")
+            ->where('tema', 'like', "%$tema%")
+            // ->where('user_id', 'like', "%$idRedactor%")
+            ->where('published', '=', 0)
+            ->paginate(config('paginator.noticias', 5))
+            ->appends(['titulo' => $titulo, 'tema' => $tema]);
+
+        return view('noticias.listNoPublicadas', ['noticias' => $noticias, 'titulo' => $titulo, 'tema' => $tema, 'name' => $redactor]);
     }
 
     // método de restaurar noticia borrada

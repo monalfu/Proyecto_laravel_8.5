@@ -23,8 +23,12 @@ Route::controller(NoticiasController::class)->group(function() {
         ->name('no_published.noticias');
 
     // Buscador noticias por título o tema
-    Route::get('/noticias/search/{titulo?}/{tema?}')
-        ->name('noticias.search');
+    Route::get('/noticias/search/{titulo?}/{tema?}', 'searchPublicadas')
+        ->name('noticias.searchPublicadas');
+
+    // Buscador noticias no publicadas por título o tema o redactor
+    Route::get('/noticias/noPublicadas/search/{titulo?}/{tema?}/{name?}', 'searchNoPublicadas')
+    ->name('noticias.searchNoPublicadas');
 
     // Creación noticias
     Route::get('/noticias/create', 'create')

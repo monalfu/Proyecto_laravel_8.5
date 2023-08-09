@@ -4,6 +4,16 @@
 
 @section('contenido')
 
+{{-- BUSCADOR DE NOTICIAS, solo las publicadas --}}
+    <form action="{{ route('noticias.searchPublicadas') }}" method="GET" class="col-6 row">
+        <input name="titulo" type="text" class="col form-control mr-2 mb-2" placeholder="Título" maxlength="50" value="{{$titulo ?? ''}}">
+        <input type="text" name="tema" class="col form-control mr-2 mb-2" placeholder="Tema" maxlength="20" value="{{$tema ?? ''}}">
+        <button type="submit" class="col btn btn-primary mr-2 mb-2">Buscar</button>
+        <a href="{{route('noticias.index')}}">
+            <button type="button" class="col btn btn-primary mb-2">Quitar filtro</button>
+        </a>
+    </form>
+
     <div class="row">
 
         @can ('create', App\Models\Noticia::class)
@@ -13,10 +23,12 @@
             </p>
         </div>
         @endcan
+
     </div>
+
     <div class="row mx-auto" style="width: 60%">
         @foreach ($noticias as $noticia)
-            <div class="card mb-5 mx-auto" style="width: 100%; max-width: 800px">
+            <div class="card mb-5 mx-auto p-0" style="width: 100%; max-width: 800px; box-sizing: content-box">
                 <div class="" style="width: 100%">
                     <img class="card-img-top" style="width: 100%" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
                 </div>

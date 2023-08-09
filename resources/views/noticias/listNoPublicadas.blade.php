@@ -3,19 +3,35 @@
 @section('titulo', "Listado noticias")
 
 @section('contenido')
+    
+    {{-- BUSCADOR DE NOTICIAS, solo las no publicadas --}}
+    <form action="{{ route('noticias.searchNoPublicadas') }}" method="GET" class="col-6 row">
+        <input name="titulo" type="text" class="col form-control mr-2 mb-2" placeholder="Título" maxlength="50" value="{{$titulo ?? ''}}">
+        <input type="text" name="tema" class="col form-control mr-2 mb-2" placeholder="Tema" maxlength="20" value="{{$tema ?? ''}}">
+        {{-- <input type="text" name="name" class="col form-control mr-2 mb-2" placeholder="Redactor" maxlength="20" value="{{$redactor ?? ''}}"> --}}
 
+        <button type="submit" class="col btn btn-primary mr-2 mb-2">Buscar</button>
+        <a href="{{route('no_published.noticias')}}">
+            <button type="button" class="col btn btn-primary mb-2">Quitar filtro</button>
+        </a>
+    </form>
+
+    
     <div class="row">
-        {{-- falta auth para solo usuarios con role redactor --}}
+
         <div class="text-end">
             <p>Nueva noticia
                 <a href="{{ route('noticias.create') }}" class="btn btn-success ml-2">+</a>
             </p>
         </div>
+
     </div>
+    
     <div class="d-flex flex-wrap justify-content-around" style="padding: 0 2rem">
+        
         {{-- LISTADO NOTICIAS NO PUBLICADAS --}}
         @foreach ($noticias as $noticia)
-            <div class="card mb-5" style="width: 30vw;">
+            <div class="card mb-5 p-0" style="width: 30vw;">
                 <img class="card-img-top mx-auto" style="max-height: 30vw" src="{{ $noticia->imagen ? asset('storage/' . config('filesystems.noticiasImageDir')) . '/' . $noticia->imagen : asset('storage/' . config('filesystems.noticiasImageDir')) . '/default.jpg'}}" alt="Imagen noticia {{ $noticia->titulo }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $noticia->titulo }}</h5>
