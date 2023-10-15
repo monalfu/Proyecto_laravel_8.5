@@ -32,9 +32,7 @@ class NoticiasController extends Controller
             ->where('published', 1)
             ->paginate(config('pagination.noticias', 10));
 
-
         return view('noticias.list', ['noticias'=>$noticias]);
-
     }
 
     // Método que lista las noticias no publicadas y vuestra la vista
@@ -197,9 +195,10 @@ class NoticiasController extends Controller
     public function searchNoPublicadas(Request $request, $titulo = null, $tema = null, $redactor = null) {
         $titulo = $titulo ?? $request->input('titulo', '');
         $tema = $tema ?? $request->input('tema', '');
-        // $redactor = $redactor ?? $request->input('name', '');
-        // $idRedactor = User::where('name', 'like', "%$redactor%")->get();
+        $redactor = $redactor ?? $request->input('name', '');
 
+       
+        
         $noticias = Noticia::where('titulo', 'like', "%$titulo%")
             ->where('tema', 'like', "%$tema%")
             // ->where('user_id', 'like', "%$idRedactor%")

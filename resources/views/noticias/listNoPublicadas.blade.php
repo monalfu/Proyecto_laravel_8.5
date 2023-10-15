@@ -8,7 +8,7 @@
     <form action="{{ route('noticias.searchNoPublicadas') }}" method="GET" class="col-6 row">
         <input name="titulo" type="text" class="col form-control mr-2 mb-2" placeholder="Título" maxlength="50" value="{{$titulo ?? ''}}">
         <input type="text" name="tema" class="col form-control mr-2 mb-2" placeholder="Tema" maxlength="20" value="{{$tema ?? ''}}">
-        {{-- <input type="text" name="name" class="col form-control mr-2 mb-2" placeholder="Redactor" maxlength="20" value="{{$redactor ?? ''}}"> --}}
+        <input type="text" name="name" class="col form-control mr-2 mb-2" placeholder="Redactor" maxlength="20" value="{{$redactor ?? ''}}">
 
         <button type="submit" class="col btn btn-primary mr-2 mb-2">Buscar</button>
         <a href="{{route('no_published.noticias')}}">
