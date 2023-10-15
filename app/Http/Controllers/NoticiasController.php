@@ -196,17 +196,17 @@ class NoticiasController extends Controller
         $titulo = $titulo ?? $request->input('titulo', '');
         $tema = $tema ?? $request->input('tema', '');
         $redactor = $redactor ?? $request->input('name', '');
-
-       
+        
         
         $noticias = Noticia::where('titulo', 'like', "%$titulo%")
-            ->where('tema', 'like', "%$tema%")
-            // ->where('user_id', 'like', "%$idRedactor%")
-            ->where('published', '=', 0)
+            ->where('noticias.tema', 'like', "%$tema%")
+            ->where('noticias.published', '=', 0)
+            ->join('users', 'users.id', '=', 'noticias.user_id')
+            ->where('users.name', 'LIKE', "%$redactor%")
             ->paginate(config('paginator.noticias', 5))
-            ->appends(['titulo' => $titulo, 'tema' => $tema]);
+            ->appends(['titulo' => $titulo, 'tema' => $tema, 'name' => $redactor]);
 
-        return view('noticias.listNoPublicadas', ['noticias' => $noticias, 'titulo' => $titulo, 'tema' => $tema, 'name' => $redactor]);
+    return view('noticias.listNoPublicadas', ['noticias' => $noticias, 'titulo' => $titulo, 'tema' => $tema /*, 'name' => $redactor*/]);
     }
 
     // método de restaurar noticia borrada
